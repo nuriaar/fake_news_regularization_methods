@@ -1,2 +1,3 @@
 # mathml_finalproj
-yee haw
+
+Final Project Repo for Mathematical Foundations of Machine Learning
