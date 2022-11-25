@@ -40,7 +40,6 @@ def clean_col(col, stopwords, stem = False):
     Output:
         (Pandas Series) text column with clean data
     '''
-
     col = col.str.replace('[^\w\s]', '')\
         .str.replace('\d+','')\
         .str.lower()\
