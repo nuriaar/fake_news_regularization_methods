@@ -1,5 +1,4 @@
 import pandas as pd
-from src.preprocessing.data_cleaning import clean_data
 from src.preprocessing.text_preprocessing import clean_text
 
 
@@ -13,8 +12,7 @@ def read_data():
 
 def main():
     train, test = read_data()
-    train = clean_data(train)
-    print(clean_text(train))
+    train = clean_text(train)
 
 
 if __name__ == "__main__":

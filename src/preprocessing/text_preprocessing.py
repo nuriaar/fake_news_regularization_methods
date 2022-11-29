@@ -2,6 +2,7 @@
 Article text and title preprocessing. 
 '''
 
+import pandas as pd
 import nltk
 from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords
@@ -11,22 +12,6 @@ nltk.download('stopwords')
 stopwords = stopwords.words('english')
 #stopwords.extend([])
 
-
-def clean_text(data, stem=False): #stopwords=stopwords, 
-    '''Clean article title and text data.
-
-    Inputs:
-        data (Pandas DataFrame): with title and text columns
-        stopwords (list): stop words to be removed
-        stem (boolean): indicates if we want to apply stemming
-    
-    Output:
-        (Pandas DataFrame)
-    '''
-    data["title"] = clean_col(data['title'], stopwords, stem)
-    data["text"] = clean_col(data['text'], stopwords, stem)
-
-    return data
 
 
 def clean_col(col, stopwords, stem = False):
@@ -52,3 +37,27 @@ def clean_col(col, stopwords, stem = False):
         col = col.apply(lambda x: " ".join([word for word in x if not word in stopwords]))
 
     return col
+
+
+def clean_text(data, stem=False): #stopwords=stopwords, 
+    '''Clean article title and text data.
+
+    Inputs:
+        data (Pandas DataFrame): with title and text columns
+        stopwords (list): stop words to be removed
+        stem (boolean): indicates if we want to apply stemming
+    
+    Output:
+        (Pandas DataFrame)
+    '''
+    # Remove columns that are not articles
+    data = data[pd.to_numeric(df['id'], errors='coerce').notnull()]
+    df = df.dropna()
+    
+    # Clean text columns
+    data["title"] = clean_col(data['title'], stopwords, stem)
+    data["text"] = clean_col(data['text'], stopwords, stem)
+
+    return data
+
+
