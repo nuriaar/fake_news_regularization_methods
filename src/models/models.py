@@ -1,7 +1,5 @@
 import numpy as np
 
-def run_models(X, y):
-
 n, p = X_train.shape
 
 indices = np.random.permutation(n)
@@ -9,7 +7,7 @@ X_train = X_train[indices,:]
 y_train = y_train[indices]
 folds = 5
 n_alphas = 10
-lambdas = []
+lambdas = []d
 
 avg_errors_by_penalty = np.empty((n_alphas+ 1,len(lambdas)))
 
@@ -43,7 +41,8 @@ def gradient_descent(x_train, x_dev, y_train, y_dev, n_alphas, lambda_):
 
     for alpha in alphas:
         w = sgd(x_train, y_train, alpha, lambda_, 1e-4)
-        pred = x_dev@w 
+        pred = np.array(list(map(sigmoid,x_dev@w)))
+
         error_alpha_i  = (y_dev - pred)**2
 
     return error_alpha_i
