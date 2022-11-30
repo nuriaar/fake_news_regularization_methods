@@ -6,12 +6,12 @@ import pandas as pd
 import nltk
 from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 
 stop_words = "set(stopwords.words('english'))"
 nltk.download('stopwords')
 stopwords = stopwords.words('english')
 #stopwords.extend([])
-
 
 
 def clean_col(col, stopwords, stem = False):
@@ -39,8 +39,8 @@ def clean_col(col, stopwords, stem = False):
     return col
 
 
-def clean_text(data, stem=False): #stopwords=stopwords, 
-    '''Clean article title and text data.
+def clean_text(data, stem=False, stopwords=stopwords): 
+    '''Clean article text data.
 
     Inputs:
         data (Pandas DataFrame): with title and text columns
@@ -50,14 +50,57 @@ def clean_text(data, stem=False): #stopwords=stopwords,
     Output:
         (Pandas DataFrame)
     '''
-    # Remove columns that are not articles
-    data = data[pd.to_numeric(df['id'], errors='coerce').notnull()]
-    df = df.dropna()
+    # Remove rows that are not articles
+    data = data[pd.to_numeric(data['id'], errors='coerce').notnull()]
+    data = data.dropna()
     
     # Clean text columns
-    data["title"] = clean_col(data['title'], stopwords, stem)
+    #data["title"] = clean_col(data['title'], stopwords, stem)
     data["text"] = clean_col(data['text'], stopwords, stem)
 
     return data
 
+
+def transform_countvec(train_str, test_str):
+    """Transform train and test text column into count vectorizer form. 
+
+    Inputs: 
+        train (Pandas Series of strings): text column of train data
+        test (Pandas Series of strings): text column of test data
+    
+    Output: 
+        train_countvec: matrix of word counts for the train text column
+        test_countvec: matrix of word counts for the test text column
+        words_countvec: list of words in count vectorizer 
+    """
+
+    countvectorizer = CountVectorizer(analyzer= 'word') #stop_words='english'
+    countvec_terms = countvectorizer.fit_transform(train_str)
+    words_countvec = countvectorizer.get_feature_names_out()
+    train_countvec  = countvectorizer.transform(train_str)
+    test_countvec  = countvectorizer.transform(test_str)
+    
+    return (train_countvec, test_countvec, words_countvec)
+
+
+def transform_tfidf(train_str, test_str):
+    """Transform train and test text column into TF-IDF vectorizer form. 
+
+    Inputs: 
+        train (Pandas Series of strings): text column of train data
+        test (Pandas Series of strings): text column of test data
+    
+    Output: 
+        train_countvec: tf-idf matrix for the train text column
+        test_countvec: tf-idf matrix for the test text column
+        words: list of words in tf-idf vectorizer
+    """
+
+    tfidfvectorizer = TfidfVectorizer(analyzer='word') # stop_words='english'
+    tfidf_terms = tfidfvectorizer.fit_transform(train_str)
+    words_tfidf = tfidfvectorizer.get_feature_names_out()
+    train_tdidf  = tfidfvectorizer.transform(train_str)
+    test_tfidf  = tfidfvectorizer.transform(test_str)
+    
+    return (train_tdidf, test_tfidf, words_tfidf)
 

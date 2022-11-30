@@ -1,5 +1,5 @@
 import pandas as pd
-from src.preprocessing.text_preprocessing import clean_text
+from src.preprocessing.text_preprocessing import clean_text, transform_countvec, transform_tfidf
 
 
 def read_data():
@@ -7,12 +7,19 @@ def read_data():
     """
     train = pd.read_csv("mathml_finalproj/data/train.csv")
     test = pd.read_csv("mathml_finalproj/data/test.csv")
-    return train, test
+    y_test = pd.read_csv("mathml_finalproj/data/submit.csv")
+    return train, test, y_test
 
 
 def main():
-    train, test = read_data()
-    train = clean_text(train)
+    train_raw, test_raw, y_test = read_data()
+    train_clean = clean_text(train_raw)
+    y_train = train_clean["label"]
+    test_clean = clean_text(test_raw)
+
+    #train, test, words = transform_countvec(train_clean["title"], test_clean["title"])
+    X_train, X_test, words = transform_tfidf(train_clean["title"], test_clean["title"])
+    print(X_test.todense())
 
 
 if __name__ == "__main__":
