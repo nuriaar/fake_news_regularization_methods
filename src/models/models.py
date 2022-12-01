@@ -33,13 +33,14 @@ def sgd(X, y, alpha, lambda_, eta):
         y_i = y[i]
         pred_i = sigmoid(x_i.dot(w))
         print(pred_i)
-        print(y_i - pred_i)
+        print(x_i)
+        print((y_i - pred_i) * x_i[:,1])
 
-        for i in range(len(w)):
+        for j in range(p):
             if w[i] > 0:
-                dw[i] = -1* (y_i - pred_i)* x_i + l1 + 2*l2*w[i]
+                dw[i] = -1* (y_i - pred_i)* x_i[:,j] + l1 + 2*l2*w[i]
             else:
-                dw[i] = -1* (y_i - pred_i)* x_i - l1 + 2*l2*w[i]
+                dw[i] = -1* (y_i - pred_i)* x_i[:,j] - l1 + 2*l2*w[i]
 
             w = w - eta * dw
 
