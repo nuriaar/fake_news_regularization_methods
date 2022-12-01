@@ -27,22 +27,15 @@ def sgd(X, y, alpha, lambda_, eta):
     w = np.zeros(p)
     dw = np.zeros(p)
 
-    for _ in range(100):
+    for j in range(100):
         i = np.random.randint(0, n)
         x_i = X[i]
         y_i = y[i]
         pred_i = sigmoid(x_i.dot(w))
-        print(pred_i)
-        print(x_i)
-        print((y_i - pred_i) * x_i[:,1])
 
-        for j in range(p):
-            if w[i] > 0:
-                dw[i] = -1* (y_i - pred_i)* x_i[:,j] + l1 + 2*l2*w[i]
-            else:
-                dw[i] = -1* (y_i - pred_i)* x_i[:,j] - l1 + 2*l2*w[i]
+        dw[j] = -1* (y_i - pred_i)* x_i + l1*np.sign(w) + 2*l2*w
 
-            w = w - eta * dw
+        w = w - eta * dw[j]
 
     return w
 

@@ -96,7 +96,7 @@ def transform_tfidf(train_str, test_str):
         words: list of words in tf-idf vectorizer
     """
 
-    tfidfvectorizer = TfidfVectorizer(analyzer='word') # stop_words='english'
+    tfidfvectorizer = TfidfVectorizer(analyzer='word', max_df=0.5, min_df=30) # stop_words='english'
     tfidf_terms = tfidfvectorizer.fit_transform(train_str)
     words_tfidf = tfidfvectorizer.get_feature_names_out()
     train_tdidf  = tfidfvectorizer.transform(train_str)
