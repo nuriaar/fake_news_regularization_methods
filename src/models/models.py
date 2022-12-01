@@ -31,8 +31,9 @@ def sgd(X, y, alpha, lambda_, eta):
         i = np.random.randint(0, n)
         x_i = X[i]
         y_i = y[i]
-
-        pred_i = np.array(list(map(sigmoid,x_i@w)))
+        pred_i = sigmoid(x_i.dot(w))
+        print(pred_i)
+        print(y_i - pred_i)
 
         for i in range(len(w)):
             if w[i] > 0:
