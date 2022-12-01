@@ -27,12 +27,12 @@ def sgd(X, y, alpha, lambda_, eta):
     w = np.zeros(p)
     dw = np.zeros(p)
 
-    for epoch in 100:
-        i = np.random.randint(0, len(X_train))
+    for _ in range(100):
+        i = np.random.randint(0, n)
         x_i = X[i]
         y_i = y[i]
 
-        pred_i = np.array(sigmoid(w.dot(x_i)))
+        pred_i = np.array(list(map(sigmoid,x_i@w)))
 
         for i in range(len(w)):
             if w[i] > 0:
