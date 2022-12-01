@@ -74,7 +74,7 @@ def transform_countvec(train_str, test_str):
         words_countvec: list of words in count vectorizer 
     """
 
-    countvectorizer = CountVectorizer(analyzer= 'word') #stop_words='english'
+    countvectorizer = CountVectorizer(analyzer= 'word', max_df=0.5, min_df=5) #stop_words='english'
     countvec_terms = countvectorizer.fit_transform(train_str)
     words_countvec = countvectorizer.get_feature_names_out()
     train_countvec  = countvectorizer.transform(train_str)
