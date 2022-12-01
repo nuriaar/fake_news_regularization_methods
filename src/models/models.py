@@ -1,36 +1,5 @@
 import numpy as np
 
-n, p = X_train.shape
-
-indices = np.random.permutation(n)
-X_train = X_train[indices,:]
-y_train = y_train[indices]
-folds = 5
-n_alphas = 10
-lambdas = []
-
-avg_errors_by_penalty = np.empty((n_alphas+ 1,len(lambdas)))
-
-for i, lambda_ in enumerate(lambdas):
-    errors = np.empty((n_alphas+ 1,folds))
-
-    for k in folds:
-        buckets = list(range(0, n + 1, n//folds))
-
-        val1 = buckets[k]
-        val2 = buckets[k+1]
-
-        x_dev = X[val1:val2,:]
-        x_train = np.delete(X_train, np.s_[val1:val2], axis=0)
-
-        y_dev = y[val1:val2,:]
-        y_train = np.delete(y_train, np.s_[val1:val2], axis=0)
-
-
-        errors[:,k] = gradient_descent(x_train, x_dev, y_train, y_dev,n_alphas, lambda_)
-
-    avg_errors_by_penalty[:,i] = np.mean(errors, axis=1)
-
 
 def gradient_descent(x_train, x_dev, y_train, y_dev, n_alphas, lambda_):
     '''
