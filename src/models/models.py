@@ -7,7 +7,7 @@ X_train = X_train[indices,:]
 y_train = y_train[indices]
 folds = 5
 n_alphas = 10
-lambdas = []d
+lambdas = []
 
 avg_errors_by_penalty = np.empty((n_alphas+ 1,len(lambdas)))
 
@@ -48,7 +48,7 @@ def gradient_descent(x_train, x_dev, y_train, y_dev, n_alphas, lambda_):
     return error_alpha_i
 
 
-def sgd(x, y, alpha, lambda_, eta): 
+def sgd(X, y, alpha, lambda_, eta): 
     '''
     '''
     n, p = X.shape
@@ -56,7 +56,7 @@ def sgd(x, y, alpha, lambda_, eta):
     l2 = (1-alpha)*lambda_
 
     w = np.zeros(p)
-    dW = np.zeros(p)
+    dw = np.zeros(p)
 
     for epoch in 100000:
         i = np.random.randint(0, len(X_train))
