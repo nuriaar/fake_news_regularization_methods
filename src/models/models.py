@@ -27,7 +27,7 @@ def sgd(X, y, alpha, lambda_, eta):
     w = np.zeros(p)
     dw = np.zeros(p)
 
-    for epoch in 100000:
+    for epoch in 100:
         i = np.random.randint(0, len(X_train))
         x_i = X[i]
         y_i = y[i]
