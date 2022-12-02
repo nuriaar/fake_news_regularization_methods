@@ -30,7 +30,7 @@ def gradient_descent(X_train, X_val, y_train, y_val, n_alphas, lambda_):
     return loss_alpha
 
 
-def sgd(X, y, alpha, lambda_, eta): 
+def sgd(X, y, alpha, lambda_, eta, epochs): 
     '''Implement stochastic gradient descent and returns optimal weights.
 
     Inputs: 
@@ -38,6 +38,7 @@ def sgd(X, y, alpha, lambda_, eta):
         y (Numpy Array): true label (0 or 1)
         lambda (float): regularization parameter
         eta (float): gradient descent step size
+        epochs (int): number of steps in gradient descent
     
     Returns:
         w (Numpy Array): optimal weights
@@ -46,14 +47,15 @@ def sgd(X, y, alpha, lambda_, eta):
     l1 = alpha * lambda_
     l2 = (1 - alpha) * lambda_
 
-    w = np.ones(p)
+    #w = np.ones(p)
+    w = np.random.rand(p)
     dw = np.zeros(p)
-    for _ in range(10000):
+    for _ in range(epochs):
         i = np.random.randint(0, n)
         x_i = X[i]
         y_i = y[i]
         pred_i = 1 / (1 + np.exp(-x_i.dot(w)))
-        dw = -1*(y_i - pred_i)*x_i + l1*np.sign(w) + 2*l2*w
+        dw = -1*(y_i - pred_i)*x_i + l1*np.sign(w) + l2*w
         w = w - eta*dw
         w = w.A1
 
@@ -94,6 +96,6 @@ def pred_to_accuracy(y_pred, y_test, threshold):
     '''
     pred_label = np.where(y_pred > threshold, 1, 0)
     errors = abs(y_test - pred_label)
-    accuracy = sum(errors)/len(errors)
+    accuracy = 1 - np.mean(errors)
 
     return accuracy
