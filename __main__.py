@@ -1,5 +1,8 @@
 import pandas as pd
-from src.preprocessing.text_preprocessing import clean_text, transform_countvec, transform_tfidf
+
+from src.data_preprocessing import clean_text, transform_tfidf
+from src.model import gradient_descent, predict, pred_to_accuracy
+from src.viz import graph_log_loss
 
 
 def read_data():
