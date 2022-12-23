@@ -7,6 +7,11 @@ from src.model import predict, pred_to_accuracy
 
 def read_data():
     """Read train and test data csv's.
+
+    Returns:
+        train (Pandas DataFrame): training data including label
+        test (Pandas DataFrame): test data with no label
+        y_test (Pandas DataFrame): label of test data 
     """
     train = pd.read_csv("mathml_finalproj/data/train.csv")
     test = pd.read_csv("mathml_finalproj/data/test.csv")

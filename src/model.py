@@ -115,7 +115,7 @@ def get_best_vals(avg_loss_array, lambdas):
     '''
     n = len(lambdas)
     ind_ridge = (np.where(avg_loss_array[0] == avg_loss_array[0].min())[0][0])
-    ind_lasso = (np.where(avg_loss_array[10] == avg_loss_array[n-1].min())[0][0])
+    ind_lasso = (np.where(avg_loss_array[10] == avg_loss_array[-1].min())[0][0])
 
     enl_matrix = avg_loss_array[1:n-1]
     alpha_idx, en_lambda_idx = np.where(enl_matrix == np.min(enl_matrix))
