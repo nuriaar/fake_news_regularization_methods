@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import LogFormatterExponent
 
 
-def graph_log_loss(log_loss):
+def graph_log_loss(log_loss, lambdas):
     """Log loss visualization
 
     Inputs: 
@@ -20,7 +20,7 @@ def graph_log_loss(log_loss):
                                             'alpha_0.6','alpha_0.7','alpha_0.8',
                                             'alpha_0.9', 'lasso'])
 
-    df.insert(0,'lambda', [0.01, 0.001, 0.0001, 0.00001, 0.000001, 0.0000001, 0.00000001])
+    df.insert(0,'lambda', lambdas)
 
     df_melt = pd.melt(df, id_vars=['lambda'], 
                           value_vars=['ridge', 'alpha_0.1',
@@ -34,7 +34,7 @@ def graph_log_loss(log_loss):
 
     ax = sns.lineplot(x='lambda', y='avg_err', data=df_melt, hue='model_type')
     ax.set_xscale('log')
-    ax.set_title('Average Error by Model Specification', fontsize=18)
-    ax.set_ylabel('Average Error Rate')
+    ax.set_title('Average Log Loss by Model Specification', fontsize=18)
+    ax.set_ylabel('Average Log Loss')
 
     return ax

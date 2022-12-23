@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def gradient_descent(X_train, X_val, y_train, y_val, n_alphas, lambda_):
+def gradient_descent(X_train, X_val, y_train, y_val, n_alphas, lambda_, eta, epochs):
     '''Implement stochastic gradient descent to find optimal model weights
     for every alpha for a given lambda and return the validation average log loss.
 
@@ -22,7 +22,7 @@ def gradient_descent(X_train, X_val, y_train, y_val, n_alphas, lambda_):
     loss_alpha = np.zeros(n_alphas+1)
 
     for i, alpha in enumerate(alphas):
-        w = sgd(X_train, y_train, alpha, lambda_, 1e-3)
+        w = sgd(X_train, y_train, alpha, lambda_, eta, epochs)
         pred = (1 / (1 + np.exp(-X_val.dot(w)))).A1
         errors = (-y_val*np.log(pred)) - ((1-y_val)*np.log(pred))
         loss_alpha[i]  = np.mean(errors)
@@ -47,7 +47,6 @@ def sgd(X, y, alpha, lambda_, eta, epochs):
     l1 = alpha * lambda_
     l2 = (1 - alpha) * lambda_
 
-    #w = np.ones(p)
     w = np.random.rand(p)
     dw = np.zeros(p)
     for _ in range(epochs):
@@ -99,3 +98,32 @@ def pred_to_accuracy(y_pred, y_test, threshold):
     accuracy = 1 - np.mean(errors)
 
     return accuracy
+
+
+def get_best_vals(avg_loss_array, lambdas):
+    '''Select the best performing lambda and alpha for regularization. 
+
+    Inputs: 
+        avg_loss_array (Numpy Matrix): 
+        lambdas (list of float)
+    
+    Returns:
+        ridge_lambda (float): best performing lambda for ridge regularization
+        lasso_lambda (float): best performing lambda for lasso regularization
+        en_lambda (float): best performing lambda for elastic net regularization
+        en_alpha (float): best performing alpha for elastic net regularization
+    '''
+    n = len(lambdas)
+    ind_ridge = (np.where(avg_loss_array[0] == avg_loss_array[0].min())[0][0])
+    ind_lasso = (np.where(avg_loss_array[10] == avg_loss_array[n-1].min())[0][0])
+
+    enl_matrix = avg_loss_array[1:n-1]
+    alpha_idx, en_lambda_idx = np.where(enl_matrix == np.min(enl_matrix))
+    alpha_idx += 1
+
+    ridge_lambda = lambdas[ind_ridge]
+    lasso_lambda = lambdas[ind_lasso]
+    en_lambda = lambdas[en_lambda_idx[0]]
+    en_alpha = alpha_idx[0] * 0.1
+
+    return  ridge_lambda, lasso_lambda, en_lambda, en_alpha
